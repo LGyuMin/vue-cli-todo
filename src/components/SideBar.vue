@@ -1,17 +1,15 @@
 <template>
     <div id="category">
         <ul>
-            <li :class="{selected:selection.all}" @click="filter('all')"><i class="fas fa-table"></i>모두 보기</li>
-            <li :class="{selected:selection.todo}" @click="filter('todo')"><i class="fas fa-list-ul"></i>할 일</li>
-            <li :class="{selected:selection.isDone}" @click="filter('isDone')"><i class="fas fa-check"></i>완료</li>
-            <li :class="{selected:selection.importance}" @click="filter('importance')"><i class="far fa-star"></i>중요</li>
+            <li :class="{selected:selection.all}" @click="selecteCategory('all')"><i class="fas fa-table"></i>모두 보기</li>
+            <li :class="{selected:selection.todo}" @click="selecteCategory('todo')"><i class="fas fa-list-ul"></i>할 일</li>
+            <li :class="{selected:selection.isDone}" @click="selecteCategory('isDone')"><i class="fas fa-check"></i>완료</li>
+            <li :class="{selected:selection.importance}" @click="selecteCategory('importance')"><i class="far fa-star"></i>중요</li>
         </ul>
     </div>
 </template>
 
 <script>
-import eventBus from '../EventBus';
-
 export default {
     name: 'Category',
     data:function(){
@@ -21,22 +19,18 @@ export default {
         }
     },
     methods: {
-        filter(o) {
-            //selected class 추가/삭제 이벤트
+        selecteCategory(category) {
+            // selected class 추가/삭제
             for(let i in this.selection){
                 this.selection[i]=false;
             }
-            this.selection[o]=true;
-            
-            //filter 이벤트 등록
-            if(o == 'todo'){
-                this.option.category = 'isDone';
-                this.option.value = false;
-            } else {
-                this.option.category = o;
-                this.option.value = true;
-            }
-            eventBus.$emit('filtering', '', this.option);
+            this.selection[category]=true;
+
+            // searchOption 설정
+            this.option.category = category == 'todo' ? 'isDone' : category;
+            this.option.value = category == 'todo' ? false : true;
+
+            this.$store.commit('setSearchOption', this.option);
         },
     }
 }

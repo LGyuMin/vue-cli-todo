@@ -1,85 +1,50 @@
 <template>
-  <!-- <div id="app">
-    <Search></Search>
-    <div id="wrapper">
-      <Category></Category>
-      <div id="right">
-        <h2>My To-Do List</h2>
-        <AddTodo></AddTodo>
-        <TodoList></TodoList>
-      </div>
+  <div id="app">
+    <!-- <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link> |
+      <router-link to="/todolist">Todo List</router-link>
     </div>
-  </div> -->
-  <div>
-    <Child>
-      <template #header>
-        <h1>Here might be a page title</h1>
-      </template>
-
-      <template>
-        <p>A paragraph for the main content.</p>
-        <p>And another one.</p>
-      </template>
-      
-      <template #footer>
-        <p>Here's some contact info</p>
-      </template>
-    </Child>
+    <router-view/> -->
+    <Home></Home>
   </div>
 </template>
 
 <script>
-// import Search from './components/Search.vue'
-// import Category from './components/Category.vue'
-// import AddTodo from './components/AddTodo.vue'
-// import TodoList from './components/TodoList.vue'
+import Home from '@/views/Home.vue';
 
-// export default {
-//   name: 'App',
-//   components: {
-//     Search, Category, AddTodo, TodoList
-//   }
-// }
-
-import Child from './components/Child.vue'
 export default {
   name: 'App',
-  components: {
-    Child
-  },
-  data:function(){
-    
-  }
+  components: { Home }
 }
+
 </script>
 
 <style>
-#wrapper {
-    width: 100%;
-    display: flex;
+body {font-family: 'Nanum Gothic', sans-serif;}
+* {margin: 0; padding: 0;}
+a {color: #000; text-decoration: none;}
+ul, ol {list-style: none;}
+input[type="text"] {border: none;}
+input[type="text"]:focus {outline: none;}
+/* #app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
 }
 
-#wrapper::after {
-    content: '';
-    display: block;
-    clear: both;
+#nav {
+  padding: 30px;
 }
 
-#wrapper>div {
-    height: calc(100vh - 50px);
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
 }
 
-#wrapper #right {
-    flex: 4 1 80%;
-    background: #D8E6E7;
-    padding: 30px 20px 0;
-    box-sizing: border-box;
-    overflow-y: auto;
-}
-
-#wrapper #right h2 {
-    font-family: 'Handlee', cursive;
-    color: #285943;
-    margin-bottom: 20px;
-}
+#nav a.router-link-exact-active {
+  color: #42b983;
+} */
 </style>

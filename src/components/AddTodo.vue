@@ -5,24 +5,18 @@
             name="todo-input" 
             id="todo-input" 
             placeholder="할 일 입력 후 엔터를 눌러 추가"
-            v-model.trim="todo"
             @keyup.enter="addTodo"
             >
     </div>
 </template>
 
 <script>
-import eventBus from '../EventBus';
-
 export default {
     name: 'AddTodo',
-    data: function() {
-        return { todo: '' }
-    },
     methods: {
-        addTodo: function() {
-            eventBus.$emit('add-todo', this.todo);
-            this.todo='';
+        addTodo: function(event) {
+            this.$store.commit('addTodo', {todo: event.target.value.trim()});
+            event.target.value = '';
         }
     }
 }

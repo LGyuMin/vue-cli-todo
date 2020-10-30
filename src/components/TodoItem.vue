@@ -3,11 +3,11 @@
         <label :class="{ selected: todo.isDone }" :for="'input'+todo.id">
             <i :class="[todo.isDone ? ['fas', 'fa-check-circle'] : ['far', 'fa-circle'] ]"></i>
         </label>
-        <input type="checkbox" :id="'input'+todo.id" v-model="todo.isDone">
-        <p :class="{selected:todo.isDone}" v-if="!isEdited" @click="checkTodo(todo.id, 'isDone')">{{ todo.todo }}</p>
-        <input type="text" autofocus v-if="isEdited" class="edit-input" v-model="todo.todo" onkeydown="if(event.keyCode==13) this.blur();" @blur="edit">
+        <input type="checkbox" :id="'input'+todo.id" @change="checkTodo(todo.id, 'isDone')">
+        <p :class="{selected:todo.isDone}" v-show="!isEdited" @click="checkTodo(todo.id, 'isDone')">{{ todo.todo }}</p>
+        <input type="text" ref="todo_input" v-show="isEdited" class="edit-input" :value="todo.todo" @keydown="editTodo">
         <div id="iconBox">
-            <i class="fas fa-edit" :class="{selected:isEdited}" @click="edit"></i>
+            <i class="fas fa-edit" :class="{selected:isEdited}" @mouseup="edit(isEdited)"></i>
             <i class="fas fa-trash-alt" @click="deleteTodo(todo.id)"></i>
             <i :class="[todo.importance ? ['fas', 'fa-star', 'selected'] : ['far', 'fa-star'] ]" @click="checkTodo(todo.id, 'importance')"></i>
         </div>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-//import eventBus from '../EventBus';
+// import eventBus from '../EventBus';
 
 export default {
     name: 'TodoItem',
@@ -26,19 +26,37 @@ export default {
         }
     },
     methods: {
-        edit() {
-            if(this.isEdited) { 
-                this.isEdited = false;
-            } else {
+        edit(state) {
+            this.isEdited = !state;
+
+            if(this.$refs.todo_input.value.trim() == '') {
+                alert('내용을 입력하세요.');
                 this.isEdited = true;
+                this.$refs.todo_input.focus(); 
+                return;
+            }
+
+            if(this.isEdited) {
+                setTimeout(() => {
+                    this.$refs.todo_input.focus(); 
+                }, 300)
             }
         },
-        checkTodo(id, p) {
-            this.$emit('check-todo', id, p);
+        editTodo(event) {
+            if(event.keyCode == 13) {
+                this.edit(this.isEdited);
+            }
+            this.$store.commit('editTodo', {id: this.todo.id, todo: event.target.value});
+        },
+        checkTodo(id, category) {
+            this.$store.commit('checkTodo', {
+                id: id,
+                category: category
+            })
         },
         deleteTodo(id) {
-            this.$emit('delete-todo', id);
-        }
+            this.$store.commit('deleteTodo', id);
+        },
     }
 }
 </script>

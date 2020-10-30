@@ -2,25 +2,22 @@
     <div id="header">
         <h1>To Do  List</h1>
         <input type="text" 
-        v-model.trim="keyword" 
-        @keyup.enter="searchList" 
+        @keyup.enter="searchTodo" 
         placeholder="검색어 입력 후 엔터">
     </div>
 </template>
 
 <script lang="ts">
-import eventBus from '../EventBus';
+// import eventBus from '../EventBus';
 
 export default {
     name: 'Search',
-    data: function() {
-        return {keyword: ''}
-    },
     methods: {
-        searchList:function() {
-            if(this.keyword != '') {
-                eventBus.$emit('filtering', this.keyword);
-                this.keyword='';
+        searchTodo(event) {
+            let keyword = event.target.value;
+            if(keyword.trim()) {
+                this.$store.commit('setSearchOption', {keyword: keyword.trim()})
+                event.target.value = '';
             }
         }
     }
